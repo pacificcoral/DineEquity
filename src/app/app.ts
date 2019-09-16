@@ -1,4 +1,6 @@
 import { MultiSelect, CheckBoxSelection } from '@syncfusion/ej2-dropdowns';
+import { Button } from '@syncfusion/ej2-buttons';
+
 
 MultiSelect.Inject(CheckBoxSelection);
 
@@ -15,6 +17,7 @@ let sportsData: { [key: string]: Object }[] = [
     { id: 'game9', sports: 'Boxing' }
 ];
 
+
 //initiate the MultiSelect
 let msObject: MultiSelect = new MultiSelect({
     // bind the sports Data to datasource property
@@ -22,11 +25,23 @@ let msObject: MultiSelect = new MultiSelect({
     // maps the appropriate column to fields property
     fields: { text: 'sports', value: 'id' },
     //set the placeholder to MultiSelect input
-    placeholder:"Select games",
+    placeholder:"Select vendors",
     // set the type of mode for checkbox to visualized the checkbox added in li element.
     mode: 'CheckBox',
     //Bind the filter event
+    showSelectAll: true,
+    selectAllText:"Select All",
 
 });
 //render the component
 msObject.appendTo('#select');
+
+let toggleMarkers: Button = new Button();
+toggleMarkers.cssClass="e-info";
+toggleMarkers.appendTo('#togglepins');
+
+let toggleHeat: Button = new Button();
+toggleHeat.cssClass='e-info';
+toggleHeat.appendTo('#toggleheat');
+
+
