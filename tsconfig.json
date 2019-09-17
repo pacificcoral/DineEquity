@@ -16,7 +16,8 @@
         "noEmitOnError": true,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "typeRoots": ["./node_modules/@types/"]
     },
     "compileOnSave": false
 }

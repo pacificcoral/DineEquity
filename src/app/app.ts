@@ -1,6 +1,16 @@
 import { MultiSelect, CheckBoxSelection } from '@syncfusion/ej2-dropdowns';
-import { Button } from '@syncfusion/ej2-buttons';
+import { Button, CheckBox } from '@syncfusion/ej2-buttons';
+import {Slider } from '@syncfusion/ej2-inputs';
+import { enableRipple} from '@syncfusion/ej2-base';
+//import {} from 'googlemaps';
 
+declare var heatmap: any;
+declare var map: any;
+declare var clearMarkers: any;
+declare var showMarkers: any;
+declare var mapjs: any;
+
+enableRipple(true);
 
 MultiSelect.Inject(CheckBoxSelection);
 
@@ -19,7 +29,7 @@ let sportsData: { [key: string]: Object }[] = [
 
 
 //initiate the MultiSelect
-let msObject: MultiSelect = new MultiSelect({
+var cmbVendors: MultiSelect = new MultiSelect({
     // bind the sports Data to datasource property
     dataSource: sportsData,
     // maps the appropriate column to fields property
@@ -34,20 +44,63 @@ let msObject: MultiSelect = new MultiSelect({
 
 });
 
+
 //render the component
-msObject.appendTo('#select');
+cmbVendors.appendTo('#select');
 
-let toggleMarkers: Button = new Button();
-toggleMarkers.cssClass="e-info";
+
+let PrintShit  = function(s: any): number  {return 3;};
+
+
+let toggleMarkers: CheckBox = new CheckBox();
+//toggleMarkers.cssClass="e-info";
+toggleMarkers.label='Show Markers';
+toggleMarkers.checked=true;
 toggleMarkers.appendTo('#togglepins');
+toggleMarkers.change = ()=>{
+    if (toggleMarkers.checked)
+        showMarkers();
+    else    
+        clearMarkers();
+}
 
-let toggleHeat: Button = new Button();
+
+
+let toggleHeat: CheckBox = new CheckBox();
 toggleHeat.cssClass='e-info';
+toggleHeat.label='Show Heat';
+toggleHeat.checked=true;
 toggleHeat.appendTo('#toggleheat');
+toggleHeat.change = ()=>{
+    if (toggleHeat.checked)
+        heatmap.setMap(map);
+    else
+        heatmap.setMap(null);
+}
 
 let loadfile: Button = new Button();
 loadfile.cssClass='e-info';
-toggleHeat.appendTo('#loadfile');
+loadfile.appendTo('#loadfile');
+
+
+
+
+
+
+// radius range slider
+let radiusSlider: Slider = new Slider({
+    value: 30,
+    showButtons: true,
+    tooltip: { placement: 'Before', isVisible: true, showOn: 'Focus' },
+    
+});
+radiusSlider.appendTo('#radiusrange');
+radiusSlider.change= radiusSliderChange;
+
+function radiusSliderChange(){
+    heatmap.set('radius', radiusSlider.value);
+    console.log(radiusSlider.value);
+}
 
 
 

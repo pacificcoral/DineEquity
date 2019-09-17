@@ -57,6 +57,32 @@
             vertical-align: middle;
         }
 
+        #content-wrapper {
+        width: 52%;
+        margin: 0 auto;
+        min-width: 185px;
+    }
+
+    #sliderwrap {
+        margin-top: 45px;
+        margin-left: -20%;
+
+    }
+
+    #sliderwrap label {
+        padding-bottom: 26px;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+
+    #sliderwrap input {
+        padding: 50px;
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 15px;
+    }
+
+
 
     </style>
 </head>
@@ -69,14 +95,21 @@
                     <button id='loadfile'>Upload File</button>
                 </div>                
                 <div class='col-xs-1'>
-                    <button id='toggleheat'>Toggle Heat</button>
+                    <div class='sliderwrap'>
+                    <input  id='toggleheat' type="checkbox" ></input>
+                    <input id='togglepins' type="checkbox"></input>
                 </div>
-                <div class='col-xs-1'>
-                    <button id='togglepins'>Toggle Markers</button>
-                </div>                
+                </div>
+                -->
                 <div class='col-xs-2'>
-                    Radius 
-                    <input type="range" min="1" max="100" value="50" id="radiusRange">
+                        <div class="content-wrapper">
+                                <div class='sliderwrap'>
+                                    <label class="userselect">Heat Radius</label>
+                                    <div id='radiusrange'></div>
+                                </div>
+                        </div>
+                    <!-- Radius 
+                    <input type="range" min="1" max="100" value="50" id="radiusRange"> -->
                 </div>
                 <div class='col-xs-3' id='container' style="margin:0 auto; width:300px;">
                         <!--element which is going to render the MultiSelect-->
@@ -96,7 +129,7 @@
 
     <div id="map"></div>
 
-    <script src="/app/map.js" type ="text/javascript"></script>
+    <script src="/app/mapjs.js" type ="text/javascript"></script>
 
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBApyuPIUCbTmBIP63WlM5jG98OV0MSNVQ&signed_in=true&libraries=visualization&callback=initMap">

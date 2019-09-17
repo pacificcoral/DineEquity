@@ -1,17 +1,21 @@
 var map, heatmap;
 var markers = [];
 var markersOn = false;
-var slider = document.getElementById("radiusRange");
+var slider = document.getElementById("radiusrange");
+var fileUpload = document.getElementById('loadfile');
+var vendors = [];
 
-slider.oninput = function () {
-    heatmap.set('radius', this.value);
-    console.log(this.value);
-}
 
-function fileUpload() {
+
+window.PrintShit("hello world");
+
+
+fileUpload.onclick = loadFile;
+
+function loadFile(){
     var input = document.createElement('input');
     input.type = 'file';
-
+    
     input.onchange = e => {
         var file = e.target.files[0];
         var reader = new FileReader();
@@ -31,7 +35,6 @@ function fileUpload() {
 
     input.click();
 }
-
 
 
 
@@ -59,10 +62,12 @@ function showMarkers() {
 }
 
 
+
 function processData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
     var lines = [];
     markers = [];
+    var ven = '';
     for (var i = 2; i < allTextLines.length; i++) {
         var data = allTextLines[i].split(/\t/);
         if (data.length == 15) {
@@ -73,9 +78,15 @@ function processData(allText) {
                 console.log(tarr);
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(parseFloat(data[12]), parseFloat(data[13])),
-                    title: data[0] + '\n' + data[3]
+                    title: data[0] + '\n' + data[3],
+                    
                 });
                 markers.push(marker);
+                // check vendors
+                if (data[0] != ven){
+                    ven = data[0];
+                    vendors.push({name: ven, active: true});
+                }
             }
         }
     }
@@ -98,41 +109,41 @@ function initMap() {
 
 }
 
-function toggleHeatmap() {
-    heatmap.setMap(heatmap.getMap() ? null : map);
-}
+// function toggleHeatmap() {
+//     heatmap.setMap(heatmap.getMap() ? null : map);
+// }
 
-function toggleMarkers() {
-    if (markersOn)
-        clearMarkers();
-    else
-        showMarkers();
-}
+// function toggleMarkers() {
+//     if (markersOn)
+//         clearMarkers();
+//     else
+//         showMarkers();
+// }
 
-function changeGradient() {
-    var gradient = [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
-    ]
-    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-}
+// function changeGradient() {
+//     var gradient = [
+//         'rgba(0, 255, 255, 0)',
+//         'rgba(0, 255, 255, 1)',
+//         'rgba(0, 191, 255, 1)',
+//         'rgba(0, 127, 255, 1)',
+//         'rgba(0, 63, 255, 1)',
+//         'rgba(0, 0, 255, 1)',
+//         'rgba(0, 0, 223, 1)',
+//         'rgba(0, 0, 191, 1)',
+//         'rgba(0, 0, 159, 1)',
+//         'rgba(0, 0, 127, 1)',
+//         'rgba(63, 0, 91, 1)',
+//         'rgba(127, 0, 63, 1)',
+//         'rgba(191, 0, 31, 1)',
+//         'rgba(255, 0, 0, 1)'
+//     ]
+//     heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+// }
 
-function changeRadius() {
-    heatmap.set('radius', heatmap.get('radius') ? null : 20);
-}
+// function changeRadius() {
+//     heatmap.set('radius', heatmap.get('radius') ? null : 20);
+// }
 
-function changeOpacity() {
-    heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-}
+// function changeOpacity() {
+//     heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+// }
