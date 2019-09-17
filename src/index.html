@@ -51,6 +51,12 @@
             z-index: 5;
         }
 
+        #controls-row{
+            padding: 10px;
+            background-color: white;
+            vertical-align: middle;
+        }
+
 
     </style>
 </head>
@@ -58,29 +64,35 @@
 <body>
     <div class='control-section'>
         <div class='controls'>
-            <div class='row'>
-                <div class='col-xs-2'>
+            <div class='row' id='controls-row'>
+                <div class='col-xs-1'>
+                    <button id='loadfile'>Upload File</button>
+                </div>                
+                <div class='col-xs-1'>
+                    <button id='toggleheat'>Toggle Heat</button>
+                </div>
+                <div class='col-xs-1'>
                     <button id='togglepins'>Toggle Markers</button>
                 </div>                
                 <div class='col-xs-2'>
-                    <button id='toggleheat'>Toggle Heat</button>
+                    Radius 
+                    <input type="range" min="1" max="100" value="50" id="radiusRange">
                 </div>
+                <div class='col-xs-3' id='container' style="margin:0 auto; width:300px;">
+                        <!--element which is going to render the MultiSelect-->
+                        <input type="text" tabindex="1" id='select' />
+                    </div>
             </div>
         </div>
     </div>
-    <div id='container' style="margin:0 auto; width:300px;">
-        <!--element which is going to render the MultiSelect-->
-        <input type="text" tabindex="1" id='select' />
-    </div>
 
-    <div id="floating-panel">
+
+    <!-- <div id="floating-panel">
         <button onclick="toggleHeatmap()">Toggle Heatmap</button>
         <button onclick="toggleMarkers()">Toggle Markers</button>
-        <!--<button onclick="changeRadius()">Change radius</button>-->
-        Radius:<input type="range" min="1" max="100" value="50" id="radiusRange">
-        <button onclick="fileUpload()">Load text file</button>
+              <button onclick="fileUpload()">Load text file</button>
 
-    </div>
+    </div> -->
 
     <div id="map"></div>
 

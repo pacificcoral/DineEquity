@@ -33,6 +33,7 @@ let msObject: MultiSelect = new MultiSelect({
     selectAllText:"Select All",
 
 });
+
 //render the component
 msObject.appendTo('#select');
 
@@ -43,5 +44,10 @@ toggleMarkers.appendTo('#togglepins');
 let toggleHeat: Button = new Button();
 toggleHeat.cssClass='e-info';
 toggleHeat.appendTo('#toggleheat');
+
+let loadfile: Button = new Button();
+loadfile.cssClass='e-info';
+toggleHeat.appendTo('#loadfile');
+
 
 

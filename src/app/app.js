@@ -28,4 +28,7 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     var toggleHeat = new ej2_buttons_1.Button();
     toggleHeat.cssClass = 'e-info';
     toggleHeat.appendTo('#toggleheat');
+    var loadfile = new ej2_buttons_1.Button();
+    loadfile.cssClass = 'e-info';
+    toggleHeat.appendTo('#loadfile');
 });
