@@ -9,31 +9,24 @@ declare var map: any;
 declare var clearMarkers: any;
 declare var showMarkers: any;
 declare var mapjs: any;
+declare var cmdLoadFile: any;
+declare var chkMarkers: any;
+declare var chkHeat:any;
+declare var rngRadius: any;
+declare var cmbVendors: MultiSelect;
+declare var cmbItems:any;
 
 enableRipple(true);
 
 MultiSelect.Inject(CheckBoxSelection);
 
-//define the array of complex data
-let sportsData: { [key: string]: Object }[] = [
-    { id: 'game1', sports: 'Badminton' },
-    { id: 'game2', sports: 'Football' },
-    { id: 'game3', sports: 'Tennis' },
-    { id: 'game4', sports: 'Golf' },
-    { id: 'game5', sports: 'Cricket' },
-    { id: 'game6', sports: 'Handball' },
-    { id: 'game7', sports: 'Karate' },
-    { id: 'game8', sports: 'Fencing' },
-    { id: 'game9', sports: 'Boxing' }
-];
 
 
 //initiate the MultiSelect
-var cmbVendors: MultiSelect = new MultiSelect({
+cmbVendors = new MultiSelect({
     // bind the sports Data to datasource property
-    dataSource: sportsData,
-    // maps the appropriate column to fields property
-    fields: { text: 'sports', value: 'id' },
+     // maps the appropriate column to fields property
+    fields: { text: 'name', value: 'active' },
     //set the placeholder to MultiSelect input
     placeholder:"Select vendors",
     // set the type of mode for checkbox to visualized the checkbox added in li element.
@@ -49,16 +42,15 @@ var cmbVendors: MultiSelect = new MultiSelect({
 cmbVendors.appendTo('#select');
 
 
-let PrintShit  = function(s: any): number  {return 3;};
 
 
-let toggleMarkers: CheckBox = new CheckBox();
+chkMarkers = new CheckBox();
 //toggleMarkers.cssClass="e-info";
-toggleMarkers.label='Show Markers';
-toggleMarkers.checked=true;
-toggleMarkers.appendTo('#togglepins');
-toggleMarkers.change = ()=>{
-    if (toggleMarkers.checked)
+chkMarkers.label='Show Markers';
+chkMarkers.checked=true;
+chkMarkers.appendTo('#togglepins');
+chkMarkers.change = ()=>{
+    if (chkMarkers.checked)
         showMarkers();
     else    
         clearMarkers();
@@ -66,21 +58,21 @@ toggleMarkers.change = ()=>{
 
 
 
-let toggleHeat: CheckBox = new CheckBox();
-toggleHeat.cssClass='e-info';
-toggleHeat.label='Show Heat';
-toggleHeat.checked=true;
-toggleHeat.appendTo('#toggleheat');
-toggleHeat.change = ()=>{
-    if (toggleHeat.checked)
+chkHeat = new CheckBox();
+chkHeat.cssClass='e-info';
+chkHeat.label='Show Heat';
+chkHeat.checked=true;
+chkHeat.appendTo('#toggleheat');
+chkHeat.change = ()=>{
+    if (chkHeat.checked)
         heatmap.setMap(map);
     else
         heatmap.setMap(null);
 }
 
-let loadfile: Button = new Button();
-loadfile.cssClass='e-info';
-loadfile.appendTo('#loadfile');
+cmdLoadFile = new Button();
+cmdLoadFile.cssClass='e-info';
+cmdLoadFile.appendTo('#loadfile');
 
 
 
@@ -88,18 +80,17 @@ loadfile.appendTo('#loadfile');
 
 
 // radius range slider
-let radiusSlider: Slider = new Slider({
+rngRadius = new Slider({
     value: 30,
     showButtons: true,
     tooltip: { placement: 'Before', isVisible: true, showOn: 'Focus' },
     
 });
-radiusSlider.appendTo('#radiusrange');
-radiusSlider.change= radiusSliderChange;
+rngRadius.appendTo('#radiusrange');
+rngRadius.change= radiusSliderChange;
 
 function radiusSliderChange(){
-    heatmap.set('radius', radiusSlider.value);
-    console.log(radiusSlider.value);
+    heatmap.set('radius', rngRadius.value);
 }
 
 

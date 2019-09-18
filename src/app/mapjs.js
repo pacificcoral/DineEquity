@@ -4,15 +4,20 @@ var markersOn = false;
 var slider = document.getElementById("radiusrange");
 var fileUpload = document.getElementById('loadfile');
 var vendors = [];
+var PrintShit;
+// typescript declared controls
+var cmdLoadFile, chkMarkers, chkHeat, rngRadius, cmbVendors, cmbItems;
 
 
 
-window.PrintShit("hello world");
+
+
 
 
 fileUpload.onclick = loadFile;
 
 function loadFile(){
+
     var input = document.createElement('input');
     input.type = 'file';
     
@@ -20,11 +25,10 @@ function loadFile(){
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.readAsText(file, 'UTF-8');
-
         // here we tell the reader what to do when it's done reading...
         reader.onload = readerEvent => {
             var content = readerEvent.target.result; // this is the content!
-            var points = processData(content);
+             var points = processData(content);
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: points,
                 map: map
@@ -67,7 +71,9 @@ function processData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
     var lines = [];
     markers = [];
+    clearMarkers();
     var ven = '';
+    vendors = [];
     for (var i = 2; i < allTextLines.length; i++) {
         var data = allTextLines[i].split(/\t/);
         if (data.length == 15) {
@@ -75,7 +81,6 @@ function processData(allText) {
             if (data[12] != 0) {
                 var tarr = { location: new google.maps.LatLng(parseFloat(data[12]), parseFloat(data[13])), weight: parseFloat(data[14]) };
                 lines.push(tarr);
-                console.log(tarr);
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(parseFloat(data[12]), parseFloat(data[13])),
                     title: data[0] + '\n' + data[3],
@@ -90,6 +95,8 @@ function processData(allText) {
             }
         }
     }
+    
+    cmbVendors.dataSource=vendors;
     // alert(lines);
     setMapOnAll(map);
     showMarkers();
