@@ -4,13 +4,27 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     ej2_base_1.enableRipple(true);
     ej2_dropdowns_1.MultiSelect.Inject(ej2_dropdowns_1.CheckBoxSelection);
     cmbVendors = new ej2_dropdowns_1.MultiSelect({
-        fields: { text: 'name', value: 'active' },
-        placeholder: "Select vendors",
+        fields: { text: 'name' },
+        placeholder: "Select Vendors",
         mode: 'CheckBox',
         showSelectAll: true,
         selectAllText: "Select All",
+        showDropDownIcon: true,
+        floatLabelType: "Always",
     });
-    cmbVendors.appendTo('#select');
+    cmbVendors.appendTo('#selectvendors');
+    cmbVendors.change = function (e) { selectedVendors = e.value; console.log(selectedVendors); setFilteredMapData(); };
+    cmbItems = new ej2_dropdowns_1.MultiSelect({
+        fields: { text: 'name' },
+        placeholder: "Select Items",
+        mode: 'CheckBox',
+        showSelectAll: true,
+        selectAllText: "Select All",
+        showDropDownIcon: true,
+        floatLabelType: "Always",
+    });
+    cmbItems.appendTo('#selectitems');
+    cmbItems.change = function (e) { selectedItems = e.value; console.log(selectedItems); setFilteredMapData(); };
     chkMarkers = new ej2_buttons_1.CheckBox();
     chkMarkers.label = 'Show Markers';
     chkMarkers.checked = true;
@@ -36,7 +50,7 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     cmdLoadFile.cssClass = 'e-info';
     cmdLoadFile.appendTo('#loadfile');
     rngRadius = new ej2_inputs_1.Slider({
-        value: 30,
+        value: 20,
         showButtons: true,
         tooltip: { placement: 'Before', isVisible: true, showOn: 'Focus' },
     });

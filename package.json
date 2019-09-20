@@ -10,7 +10,9 @@
     },
     "dependencies": {
         "@syncfusion/ej2": "*",
-        "@types/google-maps": "^3.2.1"
+        "@types/google-maps": "^3.2.1",
+        "python": "0.0.4",
+        "python2": "0.0.1"
     },
     "devDependencies": {
         "browser-sync": "^2.18.12",

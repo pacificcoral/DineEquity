@@ -1,6 +1,15 @@
 'use strict';
 
 var gulp = require('gulp');
+/**
+ * Added for Azure deployment 
+ */
+
+gulp.task('build', function() {
+    // Your way to build a website for production-ready. Example:
+    return gulp.src(['./src'])
+      .pipe(gulp.dest(conf.paths.dist));
+  })
 
 /**
  * Load the sample in src/app/index
@@ -20,6 +29,7 @@ gulp.task('start', ['compile'], function(done) {
     * Watching typescript file changes
     */
     gulp.watch('src/**/*.ts', ['compile', bs.reload]).on('change', reportChanges);
+    gulp.watch('src/**/mapjs.js', ['compile', bs.reload]).on('change', reportChanges);
 });
 
 /** 

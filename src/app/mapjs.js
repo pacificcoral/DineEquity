@@ -4,17 +4,24 @@ var markersOn = false;
 var slider = document.getElementById("radiusrange");
 var fileUpload = document.getElementById('loadfile');
 var vendors = [];
-var PrintShit;
+var items = [];
+var allData = [];
+var heatPoints = [];
+var selectedVendors=[];
+var selectedItems=[];
+
 // typescript declared controls
 var cmdLoadFile, chkMarkers, chkHeat, rngRadius, cmbVendors, cmbItems;
 
-
-
-
-
-
-
 fileUpload.onclick = loadFile;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 2,
+        center: { lat: 0, lng: 0 },
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+    });
+}
 
 function loadFile(){
 
@@ -28,11 +35,8 @@ function loadFile(){
         // here we tell the reader what to do when it's done reading...
         reader.onload = readerEvent => {
             var content = readerEvent.target.result; // this is the content!
-             var points = processData(content);
-            heatmap = new google.maps.visualization.HeatmapLayer({
-                data: points,
-                map: map
-            });
+            processData(content);
+
 
         }
     }
@@ -40,9 +44,123 @@ function loadFile(){
     input.click();
 }
 
+function processData(allText) {
+   var allTextLines = allText.split(/\r\n|\n/);
+    allData=[];
+    var ven = '';
+    vendors = [];
+    items = [];
+    var item = '';
+    for (var i = 2; i < allTextLines.length; i++) {
+        var data = allTextLines[i].split(/\t/);
+        if (data.length == 15 && data[0]!="") {
+            allData.push({
+                Vendor: data[0],
+                Item_No: data[1],
+                Product: data[2],
+                Facility_Name: data[3],
+                Country: data[4],
+                Address: data[5],
+                City: data[6],
+                BAP_Level: data[7],
+                Raw_Material_Region: data[8],
+                Comments: data[9],
+                Database_Name: data[10],
+                Percent_Business: data[11],
+                Latitude: data[12],
+                Longitude: data[13],
+                Weight: data[14],
+                });
 
 
+                if (data[0] != ven){
+                    ven = data[0];
+                    vendors.push({name: ven, active: true});
+                }
+                if (items.filter( i => i.name== data[2].toString().trim()).length==0)
+                {
+                    item = data[2].toString().trim();
+                    items.push({name: item});
+                }
 
+        }
+    }
+
+
+     cmbVendors.dataSource=vendors;
+     cmbVendors.selectAll(true);
+     cmbItems.dataSource = items;
+     cmbItems.selectAll(true);
+    selectedVendors = vendors.map(a=>a.name);
+    selectedItems=items.map(a=>a.name);
+    setFilteredMapData();
+}
+
+function setFilteredMapData(){
+    // filter data based on selected vendors and items
+    heatPoints=[];
+    clearMarkers();
+    markers=[];
+    if (heatmap != null) heatmap.setMap(null);
+    var filteredData=[];
+    allData.forEach((i)=>{
+        if (selectedVendors.includes(i.Vendor) && selectedItems.includes(i.Product)){
+            filteredData.push(i);
+        }
+    })
+    
+
+    filteredData.forEach((i)=>{
+        var tarr = { location: new google.maps.LatLng(parseFloat(i.Latitude), parseFloat(i.Longitude)), weight: parseFloat(i.Weight) };
+        heatPoints.push(tarr);
+        //
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(parseFloat(i.Latitude), parseFloat(i.Longitude)),
+            title: i.Vendor + '\n' + i.Facility_Name,            
+        });
+        // get vendor ordinal to determine color
+        var k=vendors.indexOf(vendors.filter((f)=>{return f.name==i.Vendor;})[0]) % 8;
+        switch (k){
+            case 0:
+                var icon= {url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png", scaledSize: new google.maps.Size(24,24) };
+            break;
+            case 1:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+            case 2:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+            case 3:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+            case 4:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+            case 5:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/pink-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+            case 6:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+            case 7:
+                    var icon= {url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png", scaledSize: new google.maps.Size(24,24) };
+                break;
+
+
+        }
+        marker.setIcon(icon);
+        markers.push(marker);
+    })
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        data: heatPoints,
+        map: map
+    });
+    heatmap.setMap(map);
+    setMapOnAll(map);
+    showMarkers();
+
+}
 
 
 
@@ -67,90 +185,3 @@ function showMarkers() {
 
 
 
-function processData(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    var lines = [];
-    markers = [];
-    clearMarkers();
-    var ven = '';
-    vendors = [];
-    for (var i = 2; i < allTextLines.length; i++) {
-        var data = allTextLines[i].split(/\t/);
-        if (data.length == 15) {
-
-            if (data[12] != 0) {
-                var tarr = { location: new google.maps.LatLng(parseFloat(data[12]), parseFloat(data[13])), weight: parseFloat(data[14]) };
-                lines.push(tarr);
-                var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(parseFloat(data[12]), parseFloat(data[13])),
-                    title: data[0] + '\n' + data[3],
-                    
-                });
-                markers.push(marker);
-                // check vendors
-                if (data[0] != ven){
-                    ven = data[0];
-                    vendors.push({name: ven, active: true});
-                }
-            }
-        }
-    }
-    
-    cmbVendors.dataSource=vendors;
-    // alert(lines);
-    setMapOnAll(map);
-    showMarkers();
-    return lines;
-}
-
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 2,
-        center: { lat: 0, lng: 0 },
-        mapTypeId: google.maps.MapTypeId.SATELLITE
-    });
-
-
-
-
-
-}
-
-// function toggleHeatmap() {
-//     heatmap.setMap(heatmap.getMap() ? null : map);
-// }
-
-// function toggleMarkers() {
-//     if (markersOn)
-//         clearMarkers();
-//     else
-//         showMarkers();
-// }
-
-// function changeGradient() {
-//     var gradient = [
-//         'rgba(0, 255, 255, 0)',
-//         'rgba(0, 255, 255, 1)',
-//         'rgba(0, 191, 255, 1)',
-//         'rgba(0, 127, 255, 1)',
-//         'rgba(0, 63, 255, 1)',
-//         'rgba(0, 0, 255, 1)',
-//         'rgba(0, 0, 223, 1)',
-//         'rgba(0, 0, 191, 1)',
-//         'rgba(0, 0, 159, 1)',
-//         'rgba(0, 0, 127, 1)',
-//         'rgba(63, 0, 91, 1)',
-//         'rgba(127, 0, 63, 1)',
-//         'rgba(191, 0, 31, 1)',
-//         'rgba(255, 0, 0, 1)'
-//     ]
-//     heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-// }
-
-// function changeRadius() {
-//     heatmap.set('radius', heatmap.get('radius') ? null : 20);
-// }
-
-// function changeOpacity() {
-//     heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-// }
