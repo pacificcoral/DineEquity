@@ -7,7 +7,8 @@ var gulp = require('gulp');
 
 gulp.task('build', function() {
     // Your way to build a website for production-ready. Example:
-    return gulp.src(['./src'])
+    console.log('building danny');
+    return gulp.src(['./src/**/{*.js,*.html,*.css,*.ico}'])
       .pipe(gulp.dest('./dist'));
   })
 
