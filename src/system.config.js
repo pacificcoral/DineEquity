@@ -1,6 +1,7 @@
 System.config({
     paths: {
         'npm:': './node_modules/',
+        'app': './src/app',
         'syncfusion:': 'npm:@syncfusion/'
         
     },

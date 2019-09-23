@@ -11,7 +11,7 @@ gulp.task('build', function() {
     // Your way to build a website for production-ready. Example:
 console.log('build entered');
 
-    return gulp.src(['./**/*','!./**/*.cmd', '!./node_modules','!./node_modules/**/*','!./dist', '!./dist/**/*'])
+    return gulp.src(['./src/**/*'])
       .pipe(gulp.dest('./dist'));
   })
 
