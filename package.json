@@ -29,5 +29,7 @@
         "systemjs": "^0.20.14",
         "typescript": "2.3.4"
     },
-    "scripts": {}
+    "scripts": {
+        "start": "gulp start"
+    }
 }
