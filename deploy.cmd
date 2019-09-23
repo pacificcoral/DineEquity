@@ -53,8 +53,10 @@ goto Deployment
 :: -----------------
 
 :SelectNodeVersion
+echo IN SELECTNODEVERSION.
 
 IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
+
   :: The following are done only on Windows Azure Websites environment
   call %KUDU_SELECT_NODE_VERSION_CMD% "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_TARGET%" "%DEPLOYMENT_TEMP%"
   IF !ERRORLEVEL! NEQ 0 goto error
@@ -63,7 +65,7 @@ IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
     SET /p NODE_EXE=<"%DEPLOYMENT_TEMP%\__nodeVersion.tmp"
     IF !ERRORLEVEL! NEQ 0 goto error
   )
-  
+
   IF EXIST "%DEPLOYMENT_TEMP%\__npmVersion.tmp" (
     SET /p NPM_JS_PATH=<"%DEPLOYMENT_TEMP%\__npmVersion.tmp"
     IF !ERRORLEVEL! NEQ 0 goto error
@@ -88,25 +90,6 @@ goto :EOF
 :Deployment
 echo Handling node.js deployment.
 
-REM :: 1. KuduSync
-REM IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-REM   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
-REM   IF !ERRORLEVEL! NEQ 0 goto error
-REM )
-
-REM :: 2. Select node version
-REM call :SelectNodeVersion
-
-REM :: 3. Install npm packages
-REM IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
-REM   pushd "%DEPLOYMENT_TARGET%"
-REM   call :ExecuteCmd !NPM_CMD! install --production
-REM   IF !ERRORLEVEL! NEQ 0 goto error
-REM   popd
-REM )
-
-REM :Deployment
-REM echo Handling node.js deployment.
 
 :: 1. Select node version
 call :SelectNodeVersion
@@ -121,6 +104,7 @@ IF EXIST "%DEPLOYMENT_SOURCE%\package.json" (
 IF EXIST "%DEPLOYMENT_SOURCE%\gulpfile.js" (
     call .\node_modules\.bin\gulp build
     IF !ERRORLEVEL! NEQ 0 goto error
+    echo gulp build success.
 )
 
 :: 4. KuduSync

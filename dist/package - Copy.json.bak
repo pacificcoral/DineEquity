@@ -9,10 +9,6 @@
         "type": "git",
         "url": "https://github.com/syncfusion/ej2-quickstart.git"
     },
-    "engines": {
-        "node": ">=10.0.0",
-        "npm": ">=6.0.0"
-    },
     "dependencies": {
         "@syncfusion/ej2": "*",
         "@types/google-maps": "^3.2.1",
@@ -21,7 +17,6 @@
         "gulp": "^3.9.1",
         "gulp-protractor": "^4.1.0",
         "gulp-typescript": "^2.13.0"
-
     },
     "devDependencies": {
         "browser-sync": "^2.18.12",
@@ -32,5 +27,11 @@
         "systemjs": "^0.20.14",
         "typescript": "2.3.4"
     },
-    "scripts": {}
+    "scripts": {
+        "start": "gulp start",
+        "build": "gulp build",
+        "serve": "gulp e2e-serve",
+        "test": "gulp e2e-test",
+        "update-webdriver": "gulp e2e-webdriver-update"
+    }
 }

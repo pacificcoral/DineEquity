@@ -1,8 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
-
-
+var clean = require('gulp-clean');
+var debug = require('gulp-debug');
 /**
  * Added for Azure deployment 
  */
@@ -15,8 +15,20 @@ console.log('build entered');
       .pipe(gulp.dest('./dist'));
   })
 
+gulp.task('debug', function(){
+    return gulp.src(['./**/*','!./**/*.cmd', '!./node_modules','!./node_modules/**/*','!./dist', '!./dist/**/*'])
+    .pipe(debug());
+})
 
+gulp.task('clean_files', function() {
+    return  gulp.src(['./dist/**/*'], {read: false})
+    .pipe(clean({force: true}));
+})
 
+gulp.task('clean_dist',['clean_files'], function() {
+    return  gulp.src(['./dist/*'], {read: false})
+    .pipe(clean({force: true}));
+})
 
 /**
  * Load the sample in src/app/index
