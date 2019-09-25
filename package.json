@@ -29,6 +29,6 @@
         "typescript": "2.3.4"
     },
     "scripts": {
-        "start": "gulp start"
+        "start": "node app/app.js"
     }
 }
