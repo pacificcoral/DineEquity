@@ -29,6 +29,6 @@
         "typescript": "2.3.4"
     },
     "scripts": {
-        "start": "node app/app.js"
+        "start": "node src/app/app.js"
     }
 }
