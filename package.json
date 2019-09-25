@@ -32,7 +32,6 @@
         "typescript": "2.3.4"
     },
     "scripts": {
-        "postinstall": "npm run build",
-        "build": "webpack --mode=production"
+
     }
 }

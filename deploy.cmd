@@ -96,12 +96,14 @@ call :SelectNodeVersion
 
 :: 2. Install npm packages
 IF EXIST "%DEPLOYMENT_SOURCE%\package.json" (
+  echo running npm install
   call :ExecuteCmd !NPM_CMD! install
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
 :: 3. Execute Gulp
 IF EXIST "%DEPLOYMENT_SOURCE%\gulpfile.js" (
+    echo executing gulp build
     call .\node_modules\.bin\gulp build
     IF !ERRORLEVEL! NEQ 0 goto error
     echo gulp build success.
