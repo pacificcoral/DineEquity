@@ -1,7 +1,8 @@
 System.config({
-    paths: {
-        'npm:': './node_modules/',
-        'syncfusion:': 'npm:@syncfusion/'
+
+        paths: { 
+            'npm:': './umd', 
+            'syncfusion:': 'npm:/' 
         
     },
     map: {
@@ -26,6 +27,7 @@ System.config({
         "@syncfusion/ej2-dropdowns": "syncfusion:ej2-dropdowns/dist/ej2-dropdowns.umd.min.js",
         "@syncfusion/ej2-querybuilder": "syncfusion:ej2-querybuilder/dist/ej2-querybuilder.umd.min.js"
     },
+
     packages: {
         'app': { main: 'app', defaultExtension: 'js' }
     }
