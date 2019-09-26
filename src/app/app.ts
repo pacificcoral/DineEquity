@@ -3,7 +3,7 @@ import { Button, CheckBox } from '@syncfusion/ej2-buttons';
 import {Slider } from '@syncfusion/ej2-inputs';
 import { enableRipple} from '@syncfusion/ej2-base';
 import {Accordion} from '@syncfusion/ej2-navigations';
-import { Grid, Group, Filter, Page, Sort, Resize, ColumnMenu, QueryCellInfoEventArgs, Search, Toolbar, Print } from '@syncfusion/ej2-grids';
+import { Grid, Group, Filter, Page, Sort, Resize, ColumnMenu, QueryCellInfoEventArgs, Search, Toolbar, Print, RowSelectEventArgs } from '@syncfusion/ej2-grids';
 import { Tooltip } from '@syncfusion/ej2-popups';
 
 
@@ -27,6 +27,7 @@ declare var setFilteredMapData:any;
 declare var allData:any;
 declare var grid:Grid;
 declare var processFromAllData: any;
+declare var bounceMarker:any;
 
 enableRipple(true);
 
@@ -137,7 +138,7 @@ grid  = new Grid({
 
     height: '40%',
     allowSelection: true,
-    selectionSettings: {type:'Multiple'},
+    selectionSettings: {type:'Multiple',enableToggle: true},
     allowGrouping: true,
     allowPaging: true,
     allowSorting: true,
@@ -148,7 +149,8 @@ grid  = new Grid({
     toolbar:['Search', 'Print', 'ExcelExport', 'WordExport', 'PdfExport'],
     enablePersistence: true,
     allowExcelExport:true,
-    allowPdfExport:true
+    allowPdfExport:true,
+    rowSelected: rowSelected
     
 });
 
@@ -165,4 +167,12 @@ function tooltip(args: QueryCellInfoEventArgs): void { // event triggers on ever
     let tooltip: Tooltip = new Tooltip({
         content: args.data[args.column.field].toString() // add Essential JS2 tooltip for every cell.
     }, <HTMLElement>args.cell);
+}
+
+function rowSelected(args: RowSelectEventArgs) {
+    let selectedrecords: Object[] = grid.getSelectedRecords();  // get the selected records.
+    console.log(selectedrecords[0]);
+    bounceMarker(selectedrecords[0]);
+
+
 }

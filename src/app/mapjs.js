@@ -188,6 +188,7 @@ function setFilteredMapData(){
 
 
         }
+        
         marker.setIcon(icon);
         markers.push(marker);
     })
@@ -202,7 +203,14 @@ function setFilteredMapData(){
 
 }
 
-
+function bounceMarker(rec){
+    markers.forEach((m)=>{
+        if (m.title ==( rec.Vendor + '\n' + rec.Facility_Name)){
+            m.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function(){m.setAnimation(null);},5000);
+        }
+    });
+}
 
 // Sets the map on all markers in the array.
 function setMapOnAll(mmap) {

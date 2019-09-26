@@ -64,7 +64,7 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
         dataSource: allData,
         height: '40%',
         allowSelection: true,
-        selectionSettings: { type: 'Multiple' },
+        selectionSettings: { type: 'Multiple', enableToggle: true },
         allowGrouping: true,
         allowPaging: true,
         allowSorting: true,
@@ -75,7 +75,8 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
         toolbar: ['Search', 'Print', 'ExcelExport', 'WordExport', 'PdfExport'],
         enablePersistence: true,
         allowExcelExport: true,
-        allowPdfExport: true
+        allowPdfExport: true,
+        rowSelected: rowSelected
     });
     grid.appendTo('#datagrid');
     var value = window.localStorage.getItem('allData');
@@ -88,5 +89,10 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
         var tooltip = new ej2_popups_1.Tooltip({
             content: args.data[args.column.field].toString()
         }, args.cell);
+    }
+    function rowSelected(args) {
+        var selectedrecords = grid.getSelectedRecords();
+        console.log(selectedrecords[0]);
+        bounceMarker(selectedrecords[0]);
     }
 });
