@@ -2,6 +2,12 @@ import { MultiSelect, CheckBoxSelection, MultiSelectChangeEventArgs, SelectEvent
 import { Button, CheckBox } from '@syncfusion/ej2-buttons';
 import {Slider } from '@syncfusion/ej2-inputs';
 import { enableRipple} from '@syncfusion/ej2-base';
+import {Accordion} from '@syncfusion/ej2-navigations';
+import { Grid, Group, Filter, Page, Sort, Resize, ColumnMenu, QueryCellInfoEventArgs, Search, Toolbar, Print } from '@syncfusion/ej2-grids';
+import { Tooltip } from '@syncfusion/ej2-popups';
+
+
+
 //import {} from 'googlemaps';
 
 
@@ -18,8 +24,13 @@ declare var cmbItems:any;
 declare var selectedItems:any;
 declare var selectedVendors: any;
 declare var setFilteredMapData:any;
+declare var allData:any;
+declare var grid:Grid;
+declare var processFromAllData: any;
 
 enableRipple(true);
+
+
 
 MultiSelect.Inject(CheckBoxSelection);
 
@@ -111,3 +122,47 @@ function radiusSliderChange(){
 }
 
 
+
+// columns: [
+//     { field: 'Vendor', headerText: 'Vendor', textAlign: 'Right', width: 120, type: 'string' },
+//     { field: 'Product', width: 140, headerText: 'Product', type: 'string' },
+//     { field: 'Country', headerText: 'Country', textAlign: 'Right', width: 120, format: 'string' },
+//     { field: 'Address', headerText: 'Address', width: 140, format: 'string' }
+// ],
+
+Grid.Inject(Group, Filter, Page, Sort, Resize, ColumnMenu, Search, Toolbar, Print);
+
+grid  = new Grid({
+    dataSource: allData,
+
+    height: '40%',
+    allowSelection: true,
+    selectionSettings: {type:'Multiple'},
+    allowGrouping: true,
+    allowPaging: true,
+    allowSorting: true,
+    allowFiltering: true,
+    allowResizing: true,
+    showColumnMenu: true,
+    queryCellInfo:tooltip,
+    toolbar:['Search', 'Print', 'ExcelExport', 'WordExport', 'PdfExport'],
+    enablePersistence: true,
+    allowExcelExport:true,
+    allowPdfExport:true
+    
+});
+
+grid.appendTo('#datagrid');
+
+let value: string = window.localStorage.getItem('allData');
+let ad: Object = JSON.parse(value);
+console.log(ad);
+if (ad!=null){
+    processFromAllData(ad);
+}
+
+function tooltip(args: QueryCellInfoEventArgs): void { // event triggers on every cell render.
+    let tooltip: Tooltip = new Tooltip({
+        content: args.data[args.column.field].toString() // add Essential JS2 tooltip for every cell.
+    }, <HTMLElement>args.cell);
+}

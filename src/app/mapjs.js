@@ -11,15 +11,17 @@ var selectedVendors=[];
 var selectedItems=[];
 
 // typescript declared controls
-var cmdLoadFile, chkMarkers, chkHeat, rngRadius, cmbVendors, cmbItems;
+var cmdLoadFile, chkMarkers, chkHeat, rngRadius, cmbVendors, cmbItems, grid;
 
 fileUpload.onclick = loadFile;
 
 function initMap() {
+    console.log('init map');
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 2,
         center: { lat: 0, lng: 0 },
         mapTypeId: google.maps.MapTypeId.SATELLITE
+        
     });
 }
 
@@ -94,6 +96,44 @@ function processData(allText) {
     selectedVendors = vendors.map(a=>a.name);
     selectedItems=items.map(a=>a.name);
     setFilteredMapData();
+    grid.dataSource=allData;
+    window.localStorage.setItem('allData',JSON.stringify(allData));
+}
+
+function processFromAllData(ad){
+
+    if (ad==null) return;
+    allData=ad;
+    var ven = '';
+    vendors = [];
+    items = [];
+    var item = '';
+    allData.forEach((d)=> {
+
+
+                if (d.Vendor != ven){
+                    ven = d.Vendor;
+                    vendors.push({name: ven, active: true});
+                }
+                if (items.filter( i => i.name== d.Product.toString().trim()).length==0)
+                {
+                    item = d.Product.toString().trim();
+                    items.push({name: item});
+                }
+
+        
+    });
+
+
+     cmbVendors.dataSource=vendors;
+     cmbVendors.selectAll(true);
+     cmbItems.dataSource = items;
+     cmbItems.selectAll(true);
+    selectedVendors = vendors.map(a=>a.name);
+    selectedItems=items.map(a=>a.name);
+    setFilteredMapData();
+    grid.dataSource=allData;
+
 }
 
 function setFilteredMapData(){

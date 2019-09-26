@@ -42,12 +42,12 @@ console.log('copy ej2-umd-file entered');
 /**
  * Load the sample in src/app/index
  */
-gulp.task('start', ['compile'], function(done) {
+gulp.task('start', ['compile', 'build'], function(done) {
     var browserSync = require('browser-sync');
     var bs = browserSync.create('Essential JS 2');
     var options = {
         server: {
-            baseDir: ['./src', './']
+            baseDir: ['./dist']
         },
         ui: false
     };
@@ -57,8 +57,7 @@ gulp.task('start', ['compile'], function(done) {
     * Watching typescript file changes
     */
    gulp.watch('src/**/*.ts', ['compile', bs.reload]).on('change', reportChanges);
-   gulp.watch('src/**/*.ts', ['compile', bs.reload]).on('change', reportChanges);
-   gulp.watch('src/**/*', ['compile', bs.reload]).on('change', reportChanges);
+   gulp.watch(['src/**/*','!src/app/app.js'], ['build','compile', bs.reload]).on('change', reportChanges);
     
 });
 

@@ -1,4 +1,4 @@
-define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-buttons", "@syncfusion/ej2-inputs", "@syncfusion/ej2-base"], function (require, exports, ej2_dropdowns_1, ej2_buttons_1, ej2_inputs_1, ej2_base_1) {
+define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-buttons", "@syncfusion/ej2-inputs", "@syncfusion/ej2-base", "@syncfusion/ej2-grids", "@syncfusion/ej2-popups"], function (require, exports, ej2_dropdowns_1, ej2_buttons_1, ej2_inputs_1, ej2_base_1, ej2_grids_1, ej2_popups_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     ej2_base_1.enableRipple(true);
@@ -58,5 +58,35 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     rngRadius.change = radiusSliderChange;
     function radiusSliderChange() {
         heatmap.set('radius', rngRadius.value);
+    }
+    ej2_grids_1.Grid.Inject(ej2_grids_1.Group, ej2_grids_1.Filter, ej2_grids_1.Page, ej2_grids_1.Sort, ej2_grids_1.Resize, ej2_grids_1.ColumnMenu, ej2_grids_1.Search, ej2_grids_1.Toolbar, ej2_grids_1.Print);
+    grid = new ej2_grids_1.Grid({
+        dataSource: allData,
+        height: '40%',
+        allowSelection: true,
+        selectionSettings: { type: 'Multiple' },
+        allowGrouping: true,
+        allowPaging: true,
+        allowSorting: true,
+        allowFiltering: true,
+        allowResizing: true,
+        showColumnMenu: true,
+        queryCellInfo: tooltip,
+        toolbar: ['Search', 'Print', 'ExcelExport', 'WordExport', 'PdfExport'],
+        enablePersistence: true,
+        allowExcelExport: true,
+        allowPdfExport: true
+    });
+    grid.appendTo('#datagrid');
+    var value = window.localStorage.getItem('allData');
+    var ad = JSON.parse(value);
+    console.log(ad);
+    if (ad != null) {
+        processFromAllData(ad);
+    }
+    function tooltip(args) {
+        var tooltip = new ej2_popups_1.Tooltip({
+            content: args.data[args.column.field].toString()
+        }, args.cell);
     }
 });
