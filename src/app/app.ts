@@ -1,9 +1,9 @@
 import { MultiSelect, CheckBoxSelection, MultiSelectChangeEventArgs, SelectEventArgs } from '@syncfusion/ej2-dropdowns';
 import { Button, CheckBox } from '@syncfusion/ej2-buttons';
 import {Slider } from '@syncfusion/ej2-inputs';
-import { enableRipple} from '@syncfusion/ej2-base';
-import {Accordion} from '@syncfusion/ej2-navigations';
-import { Grid, Group, Filter, Page, Sort, Resize, ColumnMenu, QueryCellInfoEventArgs, Search, Toolbar, Print, RowSelectEventArgs } from '@syncfusion/ej2-grids';
+import { enableRipple, EmitType} from '@syncfusion/ej2-base';
+import {Accordion, ClickEventArgs} from '@syncfusion/ej2-navigations';
+import { Grid, Group, Filter, Page, Sort, Resize, ColumnMenu, QueryCellInfoEventArgs, Search, Toolbar, Print, RowSelectEventArgs,ExcelExport, PdfExport, Column, ColumnModel  } from '@syncfusion/ej2-grids';
 import { Tooltip } from '@syncfusion/ej2-popups';
 
 
@@ -131,7 +131,9 @@ function radiusSliderChange(){
 //     { field: 'Address', headerText: 'Address', width: 140, format: 'string' }
 // ],
 
-Grid.Inject(Group, Filter, Page, Sort, Resize, ColumnMenu, Search, Toolbar, Print);
+Grid.Inject(Group, Filter, Page, Sort, Resize, ColumnMenu, Search, Toolbar, Print, ExcelExport, PdfExport);
+
+
 
 grid  = new Grid({
     dataSource: allData,
@@ -146,15 +148,34 @@ grid  = new Grid({
     allowResizing: true,
     showColumnMenu: true,
     queryCellInfo:tooltip,
-    toolbar:['Search', 'Print', 'ExcelExport', 'WordExport', 'PdfExport'],
+    toolbar:['Search', 'Print', 'ExcelExport', 'CsvExport', 'PdfExport' ],
     enablePersistence: true,
     allowExcelExport:true,
     allowPdfExport:true,
-    rowSelected: rowSelected
+    rowSelected: rowSelected,
     
+
 });
 
+
+
+grid.toolbarClick = (args: Object) => {
+    console.log(args['item'].id );
+    if (args['item'].id === 'datagrid_excelexport') {
+
+        grid.excelExport();
+    }
+    if (args['item'].id === 'datagrid_csvexport') {
+
+        grid.csvExport();
+    }
+    if (args['item'].id === 'datagrid_pdfexport') {
+        grid.pdfExport();
+    }
+}
+
 grid.appendTo('#datagrid');
+
 
 let value: string = window.localStorage.getItem('allData');
 let ad: Object = JSON.parse(value);
@@ -162,6 +183,8 @@ console.log(ad);
 if (ad!=null){
     processFromAllData(ad);
 }
+
+
 
 function tooltip(args: QueryCellInfoEventArgs): void { // event triggers on every cell render.
     let tooltip: Tooltip = new Tooltip({
@@ -173,6 +196,7 @@ function rowSelected(args: RowSelectEventArgs) {
     let selectedrecords: Object[] = grid.getSelectedRecords();  // get the selected records.
     console.log(selectedrecords[0]);
     bounceMarker(selectedrecords[0]);
-
-
 }
+
+
+

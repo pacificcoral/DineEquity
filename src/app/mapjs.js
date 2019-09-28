@@ -72,6 +72,7 @@ function processData(allText) {
                 Latitude: data[12],
                 Longitude: data[13],
                 Weight: data[14],
+                ID: i-2
                 });
 
 
@@ -188,7 +189,11 @@ function setFilteredMapData(){
 
 
         }
-        
+        marker.addListener('click', function(e){
+
+            bringRowIntoView(marker.title, marker);
+            
+        });
         marker.setIcon(icon);
         markers.push(marker);
     })
@@ -201,6 +206,11 @@ function setFilteredMapData(){
     setMapOnAll(map);
     showMarkers();
 
+}
+
+function bringRowIntoView(markerTitle, marker){
+    var index =markers.indexOf(marker);
+    grid.selectRow(index);
 }
 
 function bounceMarker(rec){

@@ -59,7 +59,7 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     function radiusSliderChange() {
         heatmap.set('radius', rngRadius.value);
     }
-    ej2_grids_1.Grid.Inject(ej2_grids_1.Group, ej2_grids_1.Filter, ej2_grids_1.Page, ej2_grids_1.Sort, ej2_grids_1.Resize, ej2_grids_1.ColumnMenu, ej2_grids_1.Search, ej2_grids_1.Toolbar, ej2_grids_1.Print);
+    ej2_grids_1.Grid.Inject(ej2_grids_1.Group, ej2_grids_1.Filter, ej2_grids_1.Page, ej2_grids_1.Sort, ej2_grids_1.Resize, ej2_grids_1.ColumnMenu, ej2_grids_1.Search, ej2_grids_1.Toolbar, ej2_grids_1.Print, ej2_grids_1.ExcelExport, ej2_grids_1.PdfExport);
     grid = new ej2_grids_1.Grid({
         dataSource: allData,
         height: '40%',
@@ -72,12 +72,24 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
         allowResizing: true,
         showColumnMenu: true,
         queryCellInfo: tooltip,
-        toolbar: ['Search', 'Print', 'ExcelExport', 'WordExport', 'PdfExport'],
+        toolbar: ['Search', 'Print', 'ExcelExport', 'CsvExport', 'PdfExport'],
         enablePersistence: true,
         allowExcelExport: true,
         allowPdfExport: true,
-        rowSelected: rowSelected
+        rowSelected: rowSelected,
     });
+    grid.toolbarClick = function (args) {
+        console.log(args['item'].id);
+        if (args['item'].id === 'datagrid_excelexport') {
+            grid.excelExport();
+        }
+        if (args['item'].id === 'datagrid_csvexport') {
+            grid.csvExport();
+        }
+        if (args['item'].id === 'datagrid_pdfexport') {
+            grid.pdfExport();
+        }
+    };
     grid.appendTo('#datagrid');
     var value = window.localStorage.getItem('allData');
     var ad = JSON.parse(value);
