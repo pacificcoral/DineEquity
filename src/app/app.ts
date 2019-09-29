@@ -137,14 +137,15 @@ Grid.Inject(Group, Filter, Page, Sort, Resize, ColumnMenu, Search, Toolbar, Prin
 
 grid  = new Grid({
     dataSource: allData,
+    height: 300,
+    allowPaging:true,
 
-    height: '40%',
     allowSelection: true,
     selectionSettings: {type:'Multiple',enableToggle: true},
     allowGrouping: true,
-    allowPaging: true,
+
     allowSorting: true,
-    allowFiltering: true,
+    allowFiltering: false,
     allowResizing: true,
     showColumnMenu: true,
     queryCellInfo:tooltip,
@@ -153,14 +154,15 @@ grid  = new Grid({
     allowExcelExport:true,
     allowPdfExport:true,
     rowSelected: rowSelected,
-    
+    enableAltRow:true,
+    editSettings: { allowEditing: false, allowAdding: false, allowDeleting: false }
 
 });
 
 
 
 grid.toolbarClick = (args: Object) => {
-    console.log(args['item'].id );
+
     if (args['item'].id === 'datagrid_excelexport') {
 
         grid.excelExport();
@@ -194,7 +196,6 @@ function tooltip(args: QueryCellInfoEventArgs): void { // event triggers on ever
 
 function rowSelected(args: RowSelectEventArgs) {
     let selectedrecords: Object[] = grid.getSelectedRecords();  // get the selected records.
-    console.log(selectedrecords[0]);
     bounceMarker(selectedrecords[0]);
 }
 

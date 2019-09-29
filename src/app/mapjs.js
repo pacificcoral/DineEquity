@@ -209,8 +209,18 @@ function setFilteredMapData(){
 }
 
 function bringRowIntoView(markerTitle, marker){
-    var index =markers.indexOf(marker);
-    grid.selectRow(index);
+
+    var data=allData.filter(i=>i.Vendor+'\n'+i.Facility_Name == marker.title);
+    if (data.length==0) return;
+    var infowindow= new google.maps.InfoWindow(
+        {content:`<h3>${data[0].Facility_Name}<br>${data[0].Product}</h3>
+        <h4>Vendor: ${data[0].Vendor}<br></h4>
+        <div>${data[0].Address}<br>
+        ${data[0].Country}<br>
+        <b>BAP: ${data[0].BAP_Level}</b></div>`}
+        
+    );
+    infowindow.open(map, marker);
 }
 
 function bounceMarker(rec){

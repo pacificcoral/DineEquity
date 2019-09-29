@@ -62,13 +62,13 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     ej2_grids_1.Grid.Inject(ej2_grids_1.Group, ej2_grids_1.Filter, ej2_grids_1.Page, ej2_grids_1.Sort, ej2_grids_1.Resize, ej2_grids_1.ColumnMenu, ej2_grids_1.Search, ej2_grids_1.Toolbar, ej2_grids_1.Print, ej2_grids_1.ExcelExport, ej2_grids_1.PdfExport);
     grid = new ej2_grids_1.Grid({
         dataSource: allData,
-        height: '40%',
+        height: 300,
+        allowPaging: true,
         allowSelection: true,
         selectionSettings: { type: 'Multiple', enableToggle: true },
         allowGrouping: true,
-        allowPaging: true,
         allowSorting: true,
-        allowFiltering: true,
+        allowFiltering: false,
         allowResizing: true,
         showColumnMenu: true,
         queryCellInfo: tooltip,
@@ -77,9 +77,10 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
         allowExcelExport: true,
         allowPdfExport: true,
         rowSelected: rowSelected,
+        enableAltRow: true,
+        editSettings: { allowEditing: false, allowAdding: false, allowDeleting: false }
     });
     grid.toolbarClick = function (args) {
-        console.log(args['item'].id);
         if (args['item'].id === 'datagrid_excelexport') {
             grid.excelExport();
         }
@@ -104,7 +105,6 @@ define(["require", "exports", "@syncfusion/ej2-dropdowns", "@syncfusion/ej2-butt
     }
     function rowSelected(args) {
         var selectedrecords = grid.getSelectedRecords();
-        console.log(selectedrecords[0]);
         bounceMarker(selectedrecords[0]);
     }
 });
